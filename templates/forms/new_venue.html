@@ -2,10 +2,11 @@
 {% block title %}New Venue{% endblock %}
 {% block content %}
   <div class="form-wrapper">
-    <form method="post" class="form">
+    <form method="post" class="form" id="new-venue-form">
       <h3 class="form-heading">List a new venue <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
       <div class="form-group">
         <label for="name">Name</label>
+        {{ form.csrf_token }}
         {{ form.name(class_ = 'form-control', autofocus = true) }}
       </div>
       <div class="form-group">
@@ -26,17 +27,70 @@
       <div class="form-group">
           <label for="phone">Phone</label>
           {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+          {% if form.phone.errors %}
+              <ul class="errors">{% for error in form.phone.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+          {% endif %}
         </div>
       <div class="form-group">
         <label for="genres">Genres</label>
         <small>Ctrl+Click to select multiple</small>
-        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', id=form.state, autofocus = true) }}
+        {{ form.genres(class_ = 'form-control', placeholder='Genres, separated by commas', autofocus = true) }}
+        
       </div>
       <div class="form-group">
-          <label for="genres">Facebook Link</label>
-          {{ form.facebook_link(class_ = 'form-control', placeholder='http://', id=form.state, autofocus = true) }}
-        </div>
+        <label for="genres">Facebook Link</label>
+        {{ form.facebook_link(class_ = 'form-control', placeholder='http://',  autofocus = true) }}
+        {% if form.facebook_link.errors %}
+            <ul class="errors">{% for error in form.facebook_link.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="genres">Website</label>
+        {{ form.website(class_ = 'form-control', placeholder='http://',  autofocus = true) }}
+        {% if form.website.errors %}
+            <ul class="errors">{% for error in form.website.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="genres">Image Link</label>
+        {{ form.image_link(class_ = 'form-control', placeholder='http://',  autofocus = true) }}
+        {% if form.image_link.errors %}
+            <ul class="errors">{% for error in form.image_link.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.seeking_talent(autofocus = true) }}
+        <label for="genres">Seeking Talents</label>
+        {{ form.seeking_description(class_ = 'form-control', placeholder='Tell something to the talents...', autofocus = true, disabled = true) }}
+      </div>
       <input type="submit" value="Create Venue" class="btn btn-primary btn-lg btn-block">
     </form>
   </div>
+  <script>
+    
+    document.getElementById('seeking_talent').onchange = function(){
+      document.getElementById('seeking_description').disabled = !this.checked;
+    }
+
+    /* document.getElementById('new-venue-form').onsubmit = e => {
+      e.preventDefault();
+
+      const newVenue = {
+        "name": document.getElementById('name').value,
+        "genres": Array.from(document.getElementById('genres').options).filter(option => option.selected).map(option => option.value),
+        "address": document.getElementById('address').value,
+        "city": document.getElementById('city').value,
+        "state": document.getElementById('state').value,
+        "phone": document.getElementById('phone').value,
+        "website": document.getElementById('website').value,
+        "facebook_link": document.getElementById('facebook_link').value,
+        "seeking_talent": document.getElementById('seeking_talent').value,
+        "seeking_description": document.getElementById('seeking_description').value,
+        "image_link": document.getElementById('image_link').value
+      }
+      
+      console.log(newVenue);
+    } */
+
+  </script>
 {% endblock %}
