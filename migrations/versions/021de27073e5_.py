@@ -27,6 +27,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['venue_id'], ['Venue.id'], ),
     sa.PrimaryKeyConstraint('venue_id', 'artist_id')
     )
+
+    op.execute('ALTER TABLE "Venue" ALTER COLUMN genres TYPE VARCHAR[] USING genres::character varying[]')
+    op.execute('ALTER TABLE "Artist" ALTER COLUMN genres TYPE VARCHAR[] USING genres::character varying[]')  
     
     # ### end Alembic commands ###
 
