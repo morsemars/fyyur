@@ -74,6 +74,20 @@
 		{% endfor %}
 	</div>
 </section>
+<button id="delete-venue" data-id="{{ venue.id }}">Delete Venue</button>
+
+<script>
+	deleteButton = document.getElementById('delete-venue').onclick = function(e){
+		const venueId = e.target.dataset['id'];
+
+		fetch(`/venues/${venueId}`, {
+			method: 'DELETE'
+		}).then(res => {
+			window.location.replace('/')
+		});
+		
+	}
+</script>
 
 {% endblock %}
 
