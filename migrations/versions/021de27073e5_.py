@@ -25,11 +25,11 @@ def upgrade():
     sa.Column('start_time', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['artist_id'], ['Artist.id'], ),
     sa.ForeignKeyConstraint(['venue_id'], ['Venue.id'], ),
-    sa.PrimaryKeyConstraint('venue_id', 'artist_id')
+    sa.PrimaryKeyConstraint('venue_id', 'artist_id','start_time')
     )
 
     op.execute('ALTER TABLE "Venue" ALTER COLUMN genres TYPE VARCHAR[] USING genres::character varying[]')
-    op.execute('ALTER TABLE "Artist" ALTER COLUMN genres TYPE VARCHAR[] USING genres::character varying[]')  
+    op.execute('ALTER TABLE "Artist" ALTER COLUMN genres TYPE VARCHAR[] USING genres::character varying[]')
     
     # ### end Alembic commands ###
 
