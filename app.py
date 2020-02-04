@@ -103,7 +103,7 @@ app.jinja_env.filters['datetime'] = format_datetime
 # Helpers
 #----------------------------------------------------------------------------#
 
-def identify_shows(venue_artist):
+def identify_shows(venue_artist, is_venue):
   def filter_past_shows(show):
     now = datetime.now()
     return show.start_time < now
@@ -115,20 +115,36 @@ def identify_shows(venue_artist):
   past_shows = list(filter(filter_past_shows, venue_artist.shows))
   upcoming_shows = list(filter(filter_upcoming_shows, venue_artist.shows))
 
-  return {
-    "past_shows": [get_show_summary(show) for show in past_shows],
-    "upcoming_shows": [get_show_summary(show) for show in upcoming_shows],
+  if(is_venue):
+    return {
+    "past_shows": [get_artist_show_summary(show) for show in past_shows],
+    "upcoming_shows": [get_artist_show_summary(show) for show in upcoming_shows],
+    "past_shows_count":len(past_shows),
+    "upcoming_shows_count":len(upcoming_shows)
+  }
+  else:
+    return {
+    "past_shows": [get_venue_show_summary(show) for show in past_shows],
+    "upcoming_shows": [get_venue_show_summary(show) for show in upcoming_shows],
     "past_shows_count":len(past_shows),
     "upcoming_shows_count":len(upcoming_shows)
   }
 
-def get_show_summary(show):
+def get_venue_show_summary(show):
+  return {
+    "venue_id": show.venue.id,
+    "venue_name": show.venue.name,
+    "venue_image_link": show.venue.image_link,
+    "start_time": show.start_time
+  }
+
+def get_artist_show_summary(show):
   return {
     "artist_id": show.artist.id,
     "artist_name": show.artist.name,
     "artist_image_link": show.artist.image_link,
     "start_time": show.start_time
-  }
+  } 
 
 def get_venue_summary(venue):
   return {
